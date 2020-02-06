@@ -1,0 +1,62 @@
+import array as a
+
+def solution(h, q):
+  # solution(h: int, q: List[int]) -> List[int]
+  max = (2**h+1) - 1
+  nodes = list(reversed([ i for i in range(1, max)]))
+  #print(nodes)
+  #l_nodes = (max + 1)/2
+  #i_nodes = l_nodes - 1
+  if not nodes:
+    return nodes
+  t = [nodes[0]]
+  def btree(p=0, d=0):
+    if d < (h - 1):
+      lc = p + 2**((h-1)-d)
+      rc = p + 2**(d)
+      print(d, p, lc, rc)
+      for i in [lc,rc]:
+        t.append(nodes[i])
+      btree(lc, d + 1)
+      btree(rc, d + 1)
+    else:
+      return t
+  btree()
+  ans = []
+  
+  for i in q:
+    if i in t:
+      j = t.index(i)
+      if j == 0:
+        ans.append(-1)
+      else:
+        p = int((j-1)/2)
+        ans.append(t[p])
+
+  s = 0
+  for d in range(h):
+    n = 2**d
+    o = [t[i] for i in range(s,n+s)]
+    s += n
+
+    print("d: {}\t\t{}".format(d,o))
+
+  def ptree(h,t,o,s=0):
+    for d in range(h):
+      n = 2**d
+      o.append([t[i] for i in range(s, n+s)])
+      s += n
+    return o
+  print(nodes)
+  print(ptree(h,t,o=[]))
+
+  return ans
+
+test = [1,2,3]
+#print(solution(5, [19, 14, 28]))
+print(solution(4, test))
+print(solution(3, [7, 3, 5, 1]))
+#print(solution(2, test))
+#print(solution(1, test))
+#print(solution(0, test))
+
